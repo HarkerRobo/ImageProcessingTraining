@@ -3,6 +3,7 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -31,6 +32,8 @@ public class Main {
 	public static void main(String[] args) {
 		BufferedImage loaded = loadImage(FILE_PATH);
 		BufferedImage processed = processImage(loaded);
+		List<Blob> floodBlobs = floodFill(processed);
+		floodFill(processed);
 		saveImage(SAVE_PATH, processed);
 	}
 
@@ -42,13 +45,13 @@ public class Main {
 
 	private static List<Blob> floodFill(BufferedImage img) {
 		boolean[][] checked = new boolean[img.getWidth()][img.getHeight()];
-		List<Blob> blobList = new LinkedList<>();
+		List<Blob> blobList = new LinkedList<Blob>();
 		for (int x = 0; x<img.getWidth(); x++) {
 			for (int y = 0; y<img.getHeight(); y++) {
-				if (checked[x][y] == false) {
-					if (check(x, y, img)) {
-
-					}
+				List<Point> pointList = new ArrayList<Point>();
+				createBlobMap(x, y, checked, img, pointList);
+				if (pointList.size() > 0) {
+					blobList.add(new Blob(pointList));
 				}
 			}
 		}
@@ -56,10 +59,14 @@ public class Main {
 	}
 
 	private static boolean check(int x, int y, BufferedImage img) {
-		return true;
+		if (img.getRGB(x, y) == 0xFF000000) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
-	private void createBlobMap(int x, int y, boolean[][] checked, BufferedImage img, List<Point> pointList) {
+	private static void createBlobMap(int x, int y, boolean[][] checked, BufferedImage img, List<Point> pointList) {
 		if (x < img.getWidth() && y < img.getHeight() && x > 0 && y > 0) {
 			if (checked[x][y] == false) {
 				checked[x][y] = true;
