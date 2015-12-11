@@ -33,7 +33,6 @@ public class Main {
 		BufferedImage loaded = loadImage(FILE_PATH);
 		BufferedImage processed = processImage(loaded);
 		List<Blob> floodBlobs = floodFill(processed);
-		floodFill(processed);
 		saveImage(SAVE_PATH, processed);
 	}
 
