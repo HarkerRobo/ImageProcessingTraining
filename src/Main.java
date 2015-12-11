@@ -39,7 +39,6 @@ public class Main {
 	public static BufferedImage processImage(BufferedImage img) {
 		BufferedImage filtered = filterImage(img);
 		return filtered;
-
 	}
 
 	private static List<Blob> floodFill(BufferedImage img) {
